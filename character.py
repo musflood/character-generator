@@ -24,6 +24,7 @@ Use that as a basis and build up your character generator from there.
 When the generator is done it should print the basics of the character
 out to the terminal, listing their stats and abilities if they have any.
 """
+import random
 
 
 class Character(object):
@@ -32,6 +33,42 @@ class Character(object):
     Can choose from physical type fighters and magical type fighters.
     """
 
-    def __init__(self, arg):
+    CLASSES = {
+        'Barbarian': [12, ['simple', 'martial']],
+        'Bard': [8, ['simple', 'crossbow-hand', 'longsword', 'rapier', 'shortsword']],
+        'Cleric': [8, ['simple']],
+        'Druid': [8, ['dagger', 'sickle', 'spear', 'mace', 'quarterstaff', 'sling', 'javelin', 'club', 'scimitar', 'dart']],
+        'Fighter': [10, ['simple', 'martial']],
+        'Monk': [8, ['simple', 'shortsword']],
+        'Paladin': [10, ['simple', 'martial']],
+        'Ranger': [10, ['simple', 'martial']],
+        'Rogue': [8, ['simple', 'crossbow-hand', 'longsword', 'rapier', 'shortsword']],
+        'Sorcerer': [6, ['dagger', 'dart', 'sling', 'quarterstaff', 'crossbow-light']],
+        'Warlock': [8, ['simple']],
+        'Wizard': [6, ['dagger', 'dart', 'sling', 'quarterstaff', 'crossbow-light']]
+    }
+
+    def __init__(self, class_type=None):
         """Create a character."""
-        self.arg = arg
+        self.str = random.randint(6, 19)
+        self.dex = random.randint(6, 19)
+        self.con = random.randint(6, 19)
+        self.int = random.randint(6, 19)
+        self.wis = random.randint(6, 19)
+        self.cha = random.randint(6, 19)
+
+        if class_type is None:
+            self.class_type = random.choice(self.CLASSES)
+        else:
+            if class_type not in self.CLASSES:
+                raise ValueError('That is not a class you can choose.')
+            self.class_type = class_type
+
+        self.setup_class()
+
+    def setup_class(self):
+        """Edit stats based on class."""
+        base_hp = self.CLASSES[self.class_type][0]
+        self.hp = base_hp + self.con
+        self.weapons = self.CLASSES[self.class_type][1]
+
