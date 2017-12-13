@@ -36,13 +36,13 @@ class Character(object):
     CLASSES = {
         'Barbarian': [12, ['simple', 'martial']],
         'Bard': [8, ['simple', 'crossbow-hand', 'longsword', 'rapier', 'shortsword']],
-        'Cleric': [8, ['simple']],
-        'Druid': [8, ['dagger', 'sickle', 'spear', 'mace', 'quarterstaff', 'sling', 'javelin', 'club', 'scimitar', 'dart']],
         'Fighter': [10, ['simple', 'martial']],
         'Monk': [8, ['simple', 'shortsword']],
         'Paladin': [10, ['simple', 'martial']],
         'Ranger': [10, ['simple', 'martial']],
         'Rogue': [8, ['simple', 'crossbow-hand', 'longsword', 'rapier', 'shortsword']],
+        'Cleric': [8, ['simple']],
+        'Druid': [8, ['dagger', 'sickle', 'spear', 'mace', 'quarterstaff', 'sling', 'javelin', 'club', 'scimitar', 'dart']],
         'Sorcerer': [6, ['dagger', 'dart', 'sling', 'quarterstaff', 'crossbow-light']],
         'Warlock': [8, ['simple']],
         'Wizard': [6, ['dagger', 'dart', 'sling', 'quarterstaff', 'crossbow-light']]
@@ -57,8 +57,8 @@ class Character(object):
         self.wis = random.randint(6, 19)
         self.cha = random.randint(6, 19)
 
-        if class_type is None:
-            self.class_type = random.choice(self.CLASSES)
+        if not class_type:
+            self.class_type = random.choice(list(self.CLASSES))
         else:
             if class_type not in self.CLASSES:
                 raise ValueError('That is not a class you can choose.')
@@ -72,3 +72,25 @@ class Character(object):
         self.hp = base_hp + self.con
         self.weapons = self.CLASSES[self.class_type][1]
 
+
+if __name__ == '__main__':
+    print('Generate a simple RPG character!')
+    print('Possible classes are:')
+    for cl in Character.CLASSES:
+        print(cl)
+    class_type = input('Choose a class, or leave blank for random: ')
+    char = Character(class_type)
+    print("""Your character is:
+    --- {} ---
+    HP: {}
+
+    STR: {}
+    DEX: {}
+    CON: {}
+    INT: {}
+    WIS: {}
+    CHA: {}
+
+    Weapon Proficiencies: {}
+""".format(char.class_type, char.hp, char.str, char.dex, char.con, char.int,
+           char.wis, char.cha, ', '.join(char.weapons)))
