@@ -60,6 +60,7 @@ class Character(object):
         if not class_type:
             self.class_type = random.choice(list(self.CLASSES))
         else:
+            class_type = class_type.capitalize()
             if class_type not in self.CLASSES:
                 raise ValueError('That is not a class you can choose.')
             self.class_type = class_type
